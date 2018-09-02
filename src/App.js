@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
-import { ContentPage, LoginPage, SignupPage, Home } from 'components';
+import { ProfilePage, LoginPage, SignupPage, Home, Nav } from 'components';
 
 class App extends Component {
   state = {
@@ -13,15 +13,26 @@ class App extends Component {
       authed: true
     })
   );
+  onLogout = () => (
+    this.setState({
+      authed: false
+    })
+  );
+  
   render() {
     return (
       <Router>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/content' render={(props) => <ContentPage {...props} authed={this.state.authed} />} />
-          <Route path='/login' render={(props) => <LoginPage {...props} onLogin={this.onLogin} />} />
-          <Route path='/signup' component={SignupPage} />
-        </Switch>
+        <div className="content">
+          <header style={{marginBottom: "32px"}}>
+            <Nav authed={this.state.authed} onLogout={this.onLogout} />
+          </header>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route path='/profile' component={ProfilePage} />
+            <Route path='/login' render={(props) => <LoginPage {...props} onLogin={this.onLogin} />} />
+            <Route path='/signup' component={SignupPage} />
+          </Switch>
+        </div>
       </Router>
     );
   }
