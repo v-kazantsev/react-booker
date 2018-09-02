@@ -1,29 +1,9 @@
 import React from 'react';
-//import { Nav } from 'components';
 import { Grid, Segment, Image, Icon, Header, List, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import withToken from 'HOC/withToken';
 
 class ProfilePage extends React.Component {
-  async componentDidMount() {
-    try {
-      const response = await fetch(`https://api-staging.booker.com/v4.1/customer/customer/dNTtul5ixrWh?access_token=d2b24894cc984921b03ec2b79f4bd9b2&includeFieldValues=false`,
-     {
-       headers: {
-       "Host": "api-staging.booker.com",
-       "Ocp-Apim-Subscription-Key": "d2b24894cc984921b03ec2b79f4bd9b2"
-       }
-    } 
-    );
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      //this.setState({ data: json });
-      console.log(json)
-    } catch (error) {
-      console.log(error);
-    }
-  }
   render() {
   return(
     <Container style={{width: "88%"}}>
@@ -75,4 +55,4 @@ class ProfilePage extends React.Component {
   } 
 }
 
-export default ProfilePage;
+export default withToken(ProfilePage);

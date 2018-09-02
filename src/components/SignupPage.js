@@ -1,13 +1,14 @@
 import React from 'react';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import withToken from 'HOC/withToken'
 
 const genderOptions = [
-  { key: 1, text: 'Male', value: 'male' },
-  { key: 2, text: 'Female', value: 'female' },
+  { key: '1', text: 'Male', value: 1 },
+  { key: '2', text: 'Female', value: 2 },
 ]
 const countryOptions = [
-  { id: 1, text: 'United States', value:'us' },
-  { id: 2, text: 'Canada', value: 'ca' },
+  { key: '1', text: 'United States', value: 1 },
+  { key: '2', text: 'Canada', value: 2 },
 ]
 
 class SignupPage extends React.Component {
@@ -23,8 +24,8 @@ class SignupPage extends React.Component {
       city: '',
       state: '',
       zip: '',
-      country: 1,
-      gender: 0,
+      country: '',
+      gender: '',
       password: '',
     },
   }
@@ -38,10 +39,10 @@ class SignupPage extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state)
+    this.props.createCustomer(this.props.token)
   }
   render() {
-    const { firstName, lastName, homePhone, cellPhone, email, street, city, state, zip, country, gender, password } = this.state.user
+    const { firstName, lastName, homePhone, cellPhone, email, street, city, state, zip, password } = this.state.user
     return(
       <div className='login-form'>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
@@ -62,11 +63,11 @@ class SignupPage extends React.Component {
                 <Form.Input name='city' value={city} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='City' />
                 <Form.Group widths='equal'>
                 <Form.Input name='state' value={state} onChange={this.onInputChange} fluid icon='globe' iconPosition='left' placeholder='State' />
-                <Form.Select name='country' value={country} onChange={this.onInputChange} fluid options={countryOptions} placeholder='Country' />
+                <Form.Select name='country' onChange={this.onInputChange} fluid options={countryOptions} placeholder='Country' />
                 </Form.Group>
                 <Form.Group widths='equal'>
                 <Form.Input name='zip' value={zip} onChange={this.onInputChange} fluid  icon='globe' iconPosition='left' placeholder='ZIP' />
-                <Form.Select name='gender' value={gender} onChange={this.onInputChange} fluid options={genderOptions} placeholder='Gender' />
+                <Form.Select name='gender' onChange={this.onInputChange} fluid options={genderOptions} placeholder='Gender' />
                 </Form.Group>
                 <Form.Input
                   name='password'
@@ -98,4 +99,4 @@ class SignupPage extends React.Component {
 }
 
 
-export default SignupPage;
+export default withToken(SignupPage);
