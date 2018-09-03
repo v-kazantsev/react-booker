@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import getCustomerToken from 'utils/getCustomerToken';
+import doLogin from 'utils/doLogin';
 
 class LoginPage extends React.Component {
 
@@ -9,7 +9,6 @@ class LoginPage extends React.Component {
     email: '',
     password: '',
     isLoading: false,
-    customerToken: '',
   }
 
   handleChange = (event) => {
@@ -24,12 +23,11 @@ class LoginPage extends React.Component {
     this.setState({
       isLoading: true
     })
-    getCustomerToken()
+    doLogin()
     .then(data => this.setState({
-      customerToken: data,
       isLoading: false
       }, () => {this.props.handleAuth();
-        this.props.history.push({pathname: '/profile', state: {token: this.state.customerToken}})
+        this.props.history.push({pathname: '/profile', state: {customer: data}})
       })
     )
     .catch(error => console.log(error))

@@ -8,15 +8,15 @@ const Nav = ({authed, onLogout}) => {
       <Container style={{width: "90%", display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
         <Menu.Item>
           {!authed
-          ? <span>
+          ? <div>
             <Button as={Link} to="/login" basic inverted content="Login" />
             <Button as={Link} to="/signup" basic inverted content="Sign up" />
-            </span>
-          : <span>
+            </div>
+          : <div>
             <Image src='https://randomuser.me/api/portraits/women/43.jpg' avatar />
-            <span style={{marginRight: "16px"}}>Logged in as</span>
-            <Button as={Link} onClick={onLogout} to="/" basic inverted content="Logout" />
-            </span>
+              <span style={{marginRight: 16}}>jdoe@ya.ca</span>
+            <Button onClick={onLogout} as={Link} to="/logout" basic inverted content="Logout" />
+            </div>
           }
         </Menu.Item>
       </Container>

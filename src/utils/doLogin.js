@@ -1,6 +1,6 @@
 import { SUBSCRIPTION_KEY, CLIENT_SECRET, CLIENT_ID } from '.secrets'
 
-const getCustomerToken = () => {
+const doLogin = () => {
   return new Promise((res, rej) => {
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
     const targetUrl = 'https://api-staging.booker.com/v4.1/customer/customer/login'
@@ -25,8 +25,7 @@ const getCustomerToken = () => {
       .then (response => {
         response.json()
         .then(data => {
-          const {access_token} = data
-          res (access_token)
+          res (data)
         })
       .catch(error => rej(error))
         
@@ -34,4 +33,4 @@ const getCustomerToken = () => {
   }); // end of promise
 }
 
-export default getCustomerToken;
+export default doLogin;

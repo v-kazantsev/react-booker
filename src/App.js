@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
-import { ProfilePage, LoginPage, SignupPage, Home, Nav } from 'components';
-import { SUBSCRIPTION_KEY } from './.secrets'
+import { ProfilePage, LoginPage, SignupPage, Home, Nav, LogoutPage } from 'components';
+import { SUBSCRIPTION_KEY } from './.secrets';
+import doLogout from 'utils/doLogout';
 
 class App extends Component {
   state = {
@@ -18,11 +19,12 @@ class App extends Component {
     })
   )
 
-  onLogout = () => (
+  onLogout = () => {
     this.setState({
       authed: false
     })
-  );
+    doLogout(this.state.customerToken)
+  };
 
   createCustomer = async (accessToken) => {
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
@@ -87,6 +89,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/profile' component={ProfilePage} />
+            <Route path='/logout' component={LogoutPage} />
             <Route
               path='/login'
               render={props => <LoginPage {...props} handleAuth={this.handleAuth}/>} />
