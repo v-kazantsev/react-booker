@@ -1,10 +1,23 @@
 import React from 'react';
-import { Grid, Segment, Image, Icon, Header, List, Container } from 'semantic-ui-react';
+import { Grid, Segment, Image, Icon, Header, List, Container, Dimmer, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import withToken from 'HOC/withToken';
+import getCustomerInfo from 'utils/getCustomerInfo';
 
 class ProfilePage extends React.Component {
+  state = {
+    customer: {},
+    isLoading: true
+  }
+   componentDidMount = async () => {
+    const customer = await getCustomerInfo(this.props.location.state.token)
+    const customerInfo = await customer.Customer
+    this.setState({
+      customer: customerInfo,
+      isLoading: false
+    })
+  }
   render() {
+  const { CellPhone, DateOfBirth, Email, FirstName, HomePhone, LastName } = this.state.customer
   return(
     <Container style={{width: "88%"}}>
     <Grid columns='equal'>
@@ -19,17 +32,29 @@ class ProfilePage extends React.Component {
           </Header>
         </Segment>
       </Segment.Group>
-      <Segment.Group>
+      {this.state.isLoading
+      ? (<Dimmer active inverted>
+           <Loader inverted>Loading</Loader>
+         </Dimmer>)
+      : (<Segment.Group>
         <Segment>
-          Account Name:
+          <div>First Name: {FirstName}</div>
+          <div>Last Name: {LastName}</div>
+          <div>Date of Birth: {DateOfBirth}</div>
         </Segment>
         <Segment>
-          Address:
+          <div>Street: {this.state.customer.Address.Street}</div>
+          <div>City: {this.state.customer.Address.City}</div>
+          <div>State: {this.state.customer.Address.State}</div>
+          <div>Country: {this.state.customer.Address.Country.Name}</div>
+          <div>Zip: {this.state.customer.Address.Zip}</div>
         </Segment>
         <Segment>
-          Phone Number:
+          <div>Home phone number: {HomePhone}</div>
+          <div>Cellular phone number: {CellPhone}</div>
+          <div>Email: {Email}</div>
         </Segment>
-      </Segment.Group>
+      </Segment.Group>)}
       </Grid.Column>
       <Grid.Column width={4}>
         <Segment>
@@ -45,6 +70,8 @@ class ProfilePage extends React.Component {
           <List>
             <List.Item><Link to="#">Update your account's name</Link></List.Item>
             <List.Item><Link to="#">Update your address</Link></List.Item>
+            <List.Item><Link to="#">Update your e-mail</Link></List.Item>
+            <List.Item><Link to="#">Update your phone number</Link></List.Item>
             <List.Item><Link to="#">Change your payment options</Link></List.Item>
           </List>
         </Segment>
@@ -55,4 +82,4 @@ class ProfilePage extends React.Component {
   } 
 }
 
-export default withToken(ProfilePage);
+export default ProfilePage;

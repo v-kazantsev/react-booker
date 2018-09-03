@@ -2,49 +2,21 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
 import { ProfilePage, LoginPage, SignupPage, Home, Nav } from 'components';
-import { CLIENT_ID, CLIENT_SECRET, SUBSCRIPTION_KEY } from './.secrets'
+import { SUBSCRIPTION_KEY } from './.secrets'
 
 class App extends Component {
   state = {
     authed: false,
     user: '',
     accessToken: '',
+    customerToken: '',
   };
 
-  onLogin = async () => {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-    const targetUrl = 'https://api-staging.booker.com/v4.1/customer/customer/login'
-    const data = {
-        "LocationID": 32145,
-        "Email": "jdoe@ya.ca",
-        "Password": "mypassword123",
-        "BrandID": 0,
-        "client_id": `${CLIENT_ID}`,
-        "client_secret": `${CLIENT_SECRET}`,
-        "grant_type": ""
-    }
-    try {
-      const response = await fetch(`${proxyUrl}${targetUrl}`,
-     { method: 'POST',
-       headers: {
-       "Content-Type": "application/json",
-       "Ocp-Apim-Subscription-Key": `${SUBSCRIPTION_KEY}`
-       },
-       body: JSON.stringify(data)
-    } 
-    );
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      const {access_token} = json;
-      this.setState({
-        accessToken: access_token
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  handleAuth = () => (
+    this.setState({
+      authed: true
+    })
+  )
 
   onLogout = () => (
     this.setState({
@@ -99,7 +71,7 @@ class App extends Component {
         throw Error(response.statusText);
       }
       const json = await response.json();
-      console.log(json)
+      return json;
     } catch (error) {
       console.log(error);
     }
@@ -115,8 +87,12 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/profile' component={ProfilePage} />
-            <Route path='/login' render={(props) => <LoginPage {...props} onLogin={this.onLogin} />} />
-            <Route path='/signup' render={(props) => <SignupPage {...props} createCustomer={this.createCustomer} />} />
+            <Route
+              path='/login'
+              render={props => <LoginPage {...props} handleAuth={this.handleAuth}/>} />
+            <Route
+              path='/signup'
+              render={props => <SignupPage {...props} createCustomer={this.createCustomer} isLoading={this.state.isLoading} />} />
           </Switch>
         </div>
       </Router>

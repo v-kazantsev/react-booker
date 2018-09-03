@@ -27,22 +27,28 @@ class SignupPage extends React.Component {
       country: '',
       gender: '',
       password: '',
-    },
+      passwordConfirm: '',
+    }
   }
 
   onInputChange = (event) => {
-    const submittedUser = this.state.user;
-    submittedUser[event.target.name] = event.target.value;
+    const {name, value} = event.target
     this.setState({
-      user: submittedUser
+      user: { [name]: value }
     })
   }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createCustomer(this.props.token)
+    if (!event.target.checkValidity()) {
+      return;
+    }
+    //this.props.createCustomer(this.props.token)
+    const data = new FormData(event.target.elements);
+    console.log(data)
   }
   render() {
-    const { firstName, lastName, homePhone, cellPhone, email, street, city, state, zip, password } = this.state.user
+    const { firstName, lastName, homePhone, cellPhone, email, street, city, state, zip, password, passwordConfirm } = this.state.user
     return(
       <div className='login-form'>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
@@ -52,22 +58,111 @@ class SignupPage extends React.Component {
             </Header>
             <Form size='large' onSubmit={this.handleSubmit}>
               <Segment stacked>
-                <Form.Input name='firstName' value={firstName} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='First name' />
-                <Form.Input name='lastName' value={lastName} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='Last name' />
+                <Form.Input
+                  name='firstName'
+                  value={firstName}
+                  onChange={this.onInputChange}
+                  fluid
+                  icon='user'
+                  iconPosition='left'
+                  placeholder='First name'
+                  required
+                />
+                <Form.Input
+                  name='lastName'
+                  value={lastName}
+                  onChange={this.onInputChange}
+                  fluid
+                  icon='user'
+                  iconPosition='left'
+                  placeholder='Last name'
+                  required
+                />
                 <Form.Group widths='equal'>
-                <Form.Input name='homePhone' value={homePhone} onChange={this.onInputChange} fluid icon='phone' iconPosition='left' placeholder='Home phone' />
-                <Form.Input name='cellPhone' value={cellPhone} onChange={this.onInputChange} fluid icon='mobile alternate' iconPosition='left' placeholder='Cell phone' />
+                <Form.Input
+                  name='homePhone'
+                  value={homePhone}
+                  onChange={this.onInputChange}
+                  fluid icon='phone'
+                  iconPosition='left'
+                  placeholder='Home phone'
+                  required
+                />
+                <Form.Input
+                  name='cellPhone'
+                  value={cellPhone}
+                  onChange={this.onInputChange}
+                  fluid
+                  icon='mobile alternate'
+                  iconPosition='left'
+                  placeholder='Cell phone'
+                  required
+                />
                 </Form.Group>
-                <Form.Input name='email' value={email} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='E-mail address' />
-                <Form.Input name='street' value={street} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='Street address' />
-                <Form.Input name='city' value={city} onChange={this.onInputChange} fluid icon='user' iconPosition='left' placeholder='City' />
+                <Form.Input
+                  name='email'
+                  value={email}
+                  onChange={this.onInputChange}
+                  fluid
+                  icon='user'
+                  iconPosition='left'
+                  placeholder='E-mail address'
+                  required
+                />
+                <Form.Input
+                  name='street'
+                  value={street}
+                  onChange={this.onInputChange}
+                  fluid icon='user'
+                  iconPosition='left'
+                  placeholder='Street address'
+                  required
+                />
+                <Form.Input
+                  name='city'
+                  value={city}
+                  onChange={this.onInputChange}
+                  fluid icon='user'
+                  iconPosition='left'
+                  placeholder='City'
+                  required
+                />
                 <Form.Group widths='equal'>
-                <Form.Input name='state' value={state} onChange={this.onInputChange} fluid icon='globe' iconPosition='left' placeholder='State' />
-                <Form.Select name='country' onChange={this.onInputChange} fluid options={countryOptions} placeholder='Country' />
+                <Form.Input
+                  name='state'
+                  value={state}
+                  onChange={this.onInputChange}
+                  fluid icon='globe'
+                  iconPosition='left'
+                  placeholder='State'
+                  required
+                />
+                <Form.Select
+                  name='country'
+                  fluid
+                  options={countryOptions}
+                  placeholder='Country'
+                  required
+                />
                 </Form.Group>
                 <Form.Group widths='equal'>
-                <Form.Input name='zip' value={zip} onChange={this.onInputChange} fluid  icon='globe' iconPosition='left' placeholder='ZIP' />
-                <Form.Select name='gender' onChange={this.onInputChange} fluid options={genderOptions} placeholder='Gender' />
+                <Form.Input
+                  name='zip'
+                  value={zip}
+                  onChange={this.onInputChange}
+                  fluid
+                  icon='globe'
+                  iconPosition='left'
+                  placeholder='ZIP'
+                  required
+                />
+                <Form.Select
+                  name='gender'
+                  fluid
+                  options={genderOptions}
+                  placeholder='Gender'
+                  required
+                />
                 </Form.Group>
                 <Form.Input
                   name='password'
@@ -78,13 +173,17 @@ class SignupPage extends React.Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
+                  reqired
                 />
                 <Form.Input
+                  name='passwordConfirm'
+                  value={passwordConfirm}
                   fluid
                   icon='lock'
                   iconPosition='left'
                   placeholder='Re-enter the password'
                   type='password'
+                  required
                 />
                 <Button color='teal' fluid size='large'>
                   Sign up

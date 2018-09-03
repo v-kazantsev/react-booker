@@ -1,40 +1,23 @@
 import React from 'react';
-import { SUBSCRIPTION_KEY, CLIENT_SECRET, CLIENT_ID } from '.secrets'
+import getCustomerToken from 'utils/getCustomerToken'
 
 const withCustomerToken = (WrappedComponent) => {
 
   class HOC extends React.Component {
     state = {
-      token: ''
+      customerToken: ''
     }
     componentDidMount = () => {
-      this.getCustomerToken()
+      getCustomerToken()
+      .then(data => this.setState({
+        customerToken: data
+      }))
+      .catch(error => console.log(error))
     }
 
-    getCustomerToken = () => {
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
-      const targetUrl = 'https://api-staging.booker.com/v5/auth/connect/token'
-      fetch(`${proxyUrl}${targetUrl}`,
-       { method: 'POST',
-         headers: {
-         "Content-Type": "application/x-www-form-urlencoded",
-         "Ocp-Apim-Subscription-Key": `${SUBSCRIPTION_KEY}`
-         },
-         body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&scope=customer`
-      } 
-      )
-      .then (response => response.json())
-      .then (json => {
-        const {access_token} = json
-        this.setState({
-          token: access_token
-        })
-      })
-      .catch (error => console.log(error))
-    }
     render() {
       return(
-        <WrappedComponent {...this.props} token={this.state.token} />
+        <WrappedComponent {...this.props} token={this.state.customerToken} />
       )
     }
   }
