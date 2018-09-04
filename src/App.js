@@ -15,7 +15,7 @@ class App extends Component {
 
   handleAuth = () => (
     this.setState({
-      authed: true
+      authed: true,
     })
   )
 

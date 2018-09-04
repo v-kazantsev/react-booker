@@ -1,38 +1,28 @@
 import React from 'react';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
-import doLogin from 'utils/doLogin';
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { getCustomerToken } from 'actions/customerActions';
+
+const mapStateToProps = state => ({
+  isLoading: state.async.isLoading,
+  customer: Boolean(state.customer.customer.access_token)
+})
+const actions = {
+  getCustomerToken
+}
 
 class LoginPage extends React.Component {
 
-  state = {
-    email: '',
-    password: '',
-    isLoading: false,
+  componentWillReceiveProps = () => {
+    if (this.props.customer) {this.props.history.push('./profile')}
   }
 
-  handleChange = (event) => {
-    const {name, value} = event.target
-    this.setState ({
-      [name]: value
-    })
+  onLogin = values => {
+    this.props.getCustomerToken(values.email, values.password)
   }
-
-  onLogin = (event) => {
-    event.preventDefault()
-    this.setState({
-      isLoading: true
-    })
-    doLogin()
-    .then(data => this.setState({
-      isLoading: false
-      }, () => {this.props.handleAuth();
-        this.props.history.push({pathname: '/profile', state: {customer: data}})
-      })
-    )
-    .catch(error => console.log(error))
-  }
-
+  
   render() {
     return (
       <div className='login-form'>
@@ -41,34 +31,25 @@ class LoginPage extends React.Component {
             <Header as='h2' color='teal' textAlign='center'>
               Log-in to your account
             </Header>
-            <Form size='large' onSubmit={this.onLogin}>
+            <Form size='large' onSubmit={this.props.handleSubmit(this.onLogin)}>
               <Segment stacked>
-                <Form.Input
+                <Field
                   name='email'
-                  value={this.state.email}
-                  fluid
-                  icon='user'
-                  iconPosition='left'
+                  component='input'
+                  type='email'
                   placeholder='E-mail address'
-                
                 />
-                <Form.Input
+                <Field
                   name='password'
-                  value={this.state.password}
-                  fluid
-                  icon='lock'
-                  iconPosition='left'
+                  component='input'
                   placeholder='Password'
                   type='password'
-                  
                 />
-                {this.state.isLoading
-                ? (<Button color='teal' fluid size='large' loading>
-                  Loading
-                 </Button>)
-                : (<Button color='teal' fluid size='large'>
-                   Login
-                  </Button>)}
+                {
+                  this.props.isLoading
+                  ? (<Button color='teal' fluid size='large' loading>Loading</Button>)
+                  : (<Button color='teal' fluid size='large'>Login</Button>)
+                }
               </Segment>
             </Form>
             <Message>
@@ -79,6 +60,10 @@ class LoginPage extends React.Component {
       </div>
     )
   }
-}
+};
 
-export default LoginPage;
+LoginPage = connect(mapStateToProps, actions)(LoginPage)
+
+export default reduxForm({
+  form: 'login'
+})(LoginPage)

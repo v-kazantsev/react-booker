@@ -1,13 +1,13 @@
 import { SUBSCRIPTION_KEY, CLIENT_SECRET, CLIENT_ID } from '.secrets'
 
-const doLogin = () => {
+const doLogin = (email, password) => {
   return new Promise((res, rej) => {
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
     const targetUrl = 'https://api-staging.booker.com/v4.1/customer/customer/login'
     const data = {
       "LocationID": 32145,
-      "Email": "jdoe@ya.ca",
-      "Password": "mypassword123",
+      "Email": `${email}`,
+      "Password": `${password}`,
       "BrandID": 0,
       "client_id": `${CLIENT_ID}`,
       "client_secret": `${CLIENT_SECRET}`,
@@ -28,7 +28,6 @@ const doLogin = () => {
           res (data)
         })
       .catch(error => rej(error))
-        
       })//end of response
   }); // end of promise
 }

@@ -1,11 +1,16 @@
 import React from 'react';
 import { Grid, Segment, Image, Icon, Header, List, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => ({
+  customer: state.customer.customer
+})
 
 class ProfilePage extends React.Component {
   render() {
-    const {Customer} = this.props.location.state.customer.Customer
-    const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email} = Customer
+    const {Customer} = this.props.customer
+    const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email} = Customer.Customer
   return(
     <Container style={{width: "88%"}}>
     <Grid columns='equal'>
@@ -66,4 +71,4 @@ class ProfilePage extends React.Component {
   } 
 }
 
-export default ProfilePage;
+export default connect(mapStateToProps)(ProfilePage);
