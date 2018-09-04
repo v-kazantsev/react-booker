@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
-  customer: state.customer.customer
+  customer: state.customer.customerInfo.customer
 })
 
 class ProfilePage extends React.Component {

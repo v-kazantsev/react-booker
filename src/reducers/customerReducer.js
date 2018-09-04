@@ -1,25 +1,27 @@
 import createReducer from 'utils/createReducer';
-import { asyncActionStarted, asyncActionFinished, asyncActionError } from 'actions/asyncActions';
-import {
-  CUSTOMER_CREATE_STARTED,
-  CUSTOMER_CREATE_FINISHED,
-  CUSTOMER_CREATE_ERROR,
-  CUSTOMER_LOGGED_IN,
-  CUSTOMER_DATA_FETCH_STARTED,
-  CUSTOMER_DATA_FETCH_FINISHED,
-  CUSTOMER_DATA_FETCH_ERROR,
-  CUSTOMER_LOGGED_OUT
-} from 'store/constants';
+import { CUSTOMER_CREATED, CUSTOMER_LOGGED_IN, CUSTOMER_LOGGED_OUT } from 'store/constants';
 
 const initialState = {
-  customer: {},
+  customerInfo: {},
+  account: {},
+  isAuthed: false
 }
 
 export const loginCustomer = (state = initialState, payload) => {
-  return payload
+  return {...state, customerInfo: payload, isAuthed: true}
 };
+
+export const createCustomer = (state = initialState, payload) => {
+  return {...state, account: payload}
+}
+
+export const logoutCustomer = (state = initialState) => {
+  return {...state, isAuthed: false}
+}
 
 export default createReducer(initialState,{
   [CUSTOMER_LOGGED_IN]: loginCustomer,
+  [CUSTOMER_CREATED]: createCustomer,
+  [CUSTOMER_LOGGED_OUT]: logoutCustomer,
 });
 

@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { getCustomerToken } from 'actions/customerActions';
+import Input from './Input';
 
 const mapStateToProps = state => ({
   isLoading: state.async.isLoading,
-  customer: Boolean(state.customer.customer.access_token)
+  customer: state.customer.customerInfo.customer
 })
 const actions = {
   getCustomerToken
@@ -16,6 +17,7 @@ const actions = {
 class LoginPage extends React.Component {
 
   componentWillReceiveProps = () => {
+    
     if (this.props.customer) {this.props.history.push('./profile')}
   }
 
@@ -35,13 +37,13 @@ class LoginPage extends React.Component {
               <Segment stacked>
                 <Field
                   name='email'
-                  component='input'
+                  component={Input}
                   type='email'
                   placeholder='E-mail address'
                 />
                 <Field
                   name='password'
-                  component='input'
+                  component={Input}
                   placeholder='Password'
                   type='password'
                 />

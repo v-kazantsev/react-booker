@@ -1,5 +1,5 @@
 import { CLIENT_TOKEN_FETCHED } from 'store/constants';
-import { asyncActionStarted, acyncActionFinished, asyncActionError } from 'actions/asyncActions';
+import { asyncActionStarted, asyncActionFinished, asyncActionError } from 'actions/asyncActions';
 import getClientToken from 'utils/getClientToken';
 
 export const fetchClientToken = (token) => {

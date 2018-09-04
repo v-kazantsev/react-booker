@@ -1,54 +1,25 @@
 import React from 'react';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
-import withToken from 'HOC/withToken'
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { createCustomerAccount } from 'actions/customerActions';
+import Input from './Input';
 
-const genderOptions = [
-  { key: '1', text: 'Male', value: 1 },
-  { key: '2', text: 'Female', value: 2 },
-]
-const countryOptions = [
-  { key: '1', text: 'United States', value: 1 },
-  { key: '2', text: 'Canada', value: 2 },
-]
+const mapStateToProps = state => ({
+  isLoading: state.async.isLoading
+})
+
+const actions = {
+  createCustomerAccount
+}
 
 class SignupPage extends React.Component {
-  state = {
-    user: {
-      location: 32145,
-      firstName: '',
-      lastName: '',
-      homePhone: '',
-      cellPhone: '',
-      email: '',
-      street: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
-      gender: '',
-      password: '',
-      passwordConfirm: '',
-    }
+
+  onSignup = values => {
+    this.props.createCustomerAccount(values)
   }
 
-  onInputChange = (event) => {
-    const {name, value} = event.target
-    this.setState({
-      user: { [name]: value }
-    })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    if (!event.target.checkValidity()) {
-      return;
-    }
-    //this.props.createCustomer(this.props.token)
-    const data = new FormData(event.target.elements);
-    console.log(data)
-  }
   render() {
-    const { firstName, lastName, homePhone, cellPhone, email, street, city, state, zip, password, passwordConfirm } = this.state.user
     return(
       <div className='login-form'>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
@@ -56,138 +27,98 @@ class SignupPage extends React.Component {
             <Header as='h2' color='teal' textAlign='center'>
               Please fill the form to sign up
             </Header>
-            <Form size='large' onSubmit={this.handleSubmit}>
+            <Form size='large' onSubmit={this.props.handleSubmit(this.onSignup)}>
               <Segment stacked>
-                <Form.Input
+                <Field
                   name='firstName'
-                  value={firstName}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='user'
-                  iconPosition='left'
+                  type='text'
+                  component={Input}
                   placeholder='First name'
-                  required
                 />
-                <Form.Input
+                <Field
                   name='lastName'
-                  value={lastName}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='user'
-                  iconPosition='left'
-                  placeholder='Last name'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='Last name'        
                 />
                 <Form.Group widths='equal'>
-                <Form.Input
+                <Field
                   name='homePhone'
-                  value={homePhone}
-                  onChange={this.onInputChange}
-                  fluid icon='phone'
-                  iconPosition='left'
-                  placeholder='Home phone'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='Home phone'                  
                 />
-                <Form.Input
+                <Field
                   name='cellPhone'
-                  value={cellPhone}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='mobile alternate'
-                  iconPosition='left'
-                  placeholder='Cell phone'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='Cell phone'                 
                 />
                 </Form.Group>
-                <Form.Input
+                <Field
                   name='email'
-                  value={email}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='user'
-                  iconPosition='left'
-                  placeholder='E-mail address'
-                  required
+                  type='email'
+                  component={Input}
+                  placeholder='E-mail address'                  
                 />
-                <Form.Input
+                <Field
                   name='street'
-                  value={street}
-                  onChange={this.onInputChange}
-                  fluid icon='user'
-                  iconPosition='left'
-                  placeholder='Street address'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='Street address'                  
                 />
-                <Form.Input
+                <Field
                   name='city'
-                  value={city}
-                  onChange={this.onInputChange}
-                  fluid icon='user'
-                  iconPosition='left'
-                  placeholder='City'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='City'                  
                 />
                 <Form.Group widths='equal'>
-                <Form.Input
+                <Field
                   name='state'
-                  value={state}
-                  onChange={this.onInputChange}
-                  fluid icon='globe'
-                  iconPosition='left'
-                  placeholder='State'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='State'                  
                 />
-                <Form.Select
+                  <Field
                   name='country'
-                  fluid
-                  options={countryOptions}
-                  placeholder='Country'
-                  required
-                />
+                  component={Input}
+                  type='text'
+                  placeholder='Country'                  
+                  />
+                  <Field
+                  name='gender'
+                  component={Input}
+                  type='text'
+                  placeholder='Gender'                  
+                  />
+                
                 </Form.Group>
                 <Form.Group widths='equal'>
-                <Form.Input
+                <Field
                   name='zip'
-                  value={zip}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='globe'
-                  iconPosition='left'
-                  placeholder='ZIP'
-                  required
-                />
-                <Form.Select
-                  name='gender'
-                  fluid
-                  options={genderOptions}
-                  placeholder='Gender'
-                  required
+                  type='text'
+                  component={Input}
+                  placeholder='ZIP'                  
                 />
                 </Form.Group>
-                <Form.Input
+                <Field
                   name='password'
-                  value={password}
-                  onChange={this.onInputChange}
-                  fluid
-                  icon='lock'
-                  iconPosition='left'
+                  type='password'
+                  component={Input}
                   placeholder='Password'
-                  type='password'
-                  reqired
                 />
-                <Form.Input
+                <Field
                   name='passwordConfirm'
-                  value={passwordConfirm}
-                  fluid
-                  icon='lock'
-                  iconPosition='left'
+                  component={Input}
                   placeholder='Re-enter the password'
-                  type='password'
-                  required
+                  type='password'                  
                 />
-                <Button color='teal' fluid size='large'>
-                  Sign up
-                </Button>
+                {
+                  this.props.isLoading
+                  ? (<Button loading color='teal' fluid size='large'>Loading</Button> )
+                  : (<Button color='teal' fluid size='large'>Sign up</Button>)
+                }
               </Segment>
             </Form>
           </Grid.Column>
@@ -197,5 +128,8 @@ class SignupPage extends React.Component {
   }
 }
 
+SignupPage = connect(mapStateToProps, actions)(SignupPage)
 
-export default withToken(SignupPage);
+export default reduxForm({
+  form: 'signup'
+})(SignupPage)
