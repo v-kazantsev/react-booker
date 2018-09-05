@@ -12,6 +12,9 @@ export const asyncActionFinished = () => (
   {type: ASYNC_ACTION_FINISHED}
 );
 
-export const asyncActionError = () => (
-  {type: ASYNC_ACTION_ERROR}
+export const asyncActionError = (error) => (
+  {
+    type: ASYNC_ACTION_ERROR,
+    payload: error
+  }
 );

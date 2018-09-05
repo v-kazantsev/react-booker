@@ -4,7 +4,7 @@ import { CUSTOMER_CREATED, CUSTOMER_LOGGED_IN, CUSTOMER_LOGGED_OUT } from 'store
 const initialState = {
   customerInfo: {},
   account: {},
-  isAuthed: false
+  isAuthed: false,
 }
 
 export const loginCustomer = (state = initialState, payload) => {

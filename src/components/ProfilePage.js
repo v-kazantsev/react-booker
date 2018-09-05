@@ -8,10 +8,10 @@ const mapStateToProps = state => ({
 })
 
 class ProfilePage extends React.Component {
+
   render() {
-    const {Customer} = this.props.customer
-    const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email, Gender} = Customer.Customer
-    console.log(Gender)
+  const {Customer} = this.props.customer
+  const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email, Gender} = Customer.Customer
   return(
     <Container style={{width: "88%"}}>
     <Grid columns='equal'>

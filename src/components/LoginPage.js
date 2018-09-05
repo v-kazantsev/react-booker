@@ -9,7 +9,8 @@ import Input from './Input';
 
 const mapStateToProps = state => ({
   isLoading: state.async.isLoading,
-  customer: state.customer.customerInfo.customer
+  customer: state.customer.customerInfo.customer,
+  error: state.async.error,
 })
 const actions = {
   getCustomerToken
@@ -44,7 +45,7 @@ const validate = combineValidators({
 
 class LoginPage extends React.Component {
 
-  componentWillUpdate = () => {
+  componentWillReceiveProps = () => {
     
     if (this.props.customer) {this.props.history.push('./profile')}
   }
@@ -54,9 +55,11 @@ class LoginPage extends React.Component {
   }
   
   render() {
-    const {invalid, pristine, submitting} = this.props;
+    const {invalid, pristine, submitting, error} = this.props;
     return (
+      
       <div className='login-form'>
+      {error && <Message warning><Message.Header>Request failed with the following error:</Message.Header><p>{error}</p></Message>}
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as='h2' color='teal' textAlign='center'>

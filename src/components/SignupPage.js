@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { composeValidators, combineValidators, isRequired, isNumeric, createValidator } from 'revalidate';
@@ -8,7 +8,8 @@ import Input from './Input';
 import SelectInput from './SelectInput';
 
 const mapStateToProps = state => ({
-  isLoading: state.async.isLoading
+  isLoading: state.async.isLoading,
+  error: state.async.error
 })
 
 const actions = {
@@ -76,9 +77,10 @@ class SignupPage extends React.Component {
   }
 
   render() {
-    const { invalid, pristine, submitting } = this.props;
+    const { invalid, pristine, submitting, error } = this.props;
     return(
-      <div className='login-form'>
+      <div className='login-form'> 
+      {error && <Message warning><Message.Header>Request failed with the following error:</Message.Header><p>{error}</p></Message>}     
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as='h2' color='teal' textAlign='center'>
@@ -174,7 +176,7 @@ class SignupPage extends React.Component {
                   this.props.isLoading
                   ? (<Button loading color='teal' fluid size='large'>Loading</Button> )
                   : (<Button disabled={invalid || pristine|| submitting} color='teal' fluid size='large'>Sign up</Button>)
-                }
+                }                
               </Segment>
             </Form>
           </Grid.Column>

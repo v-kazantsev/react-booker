@@ -19,7 +19,7 @@ const createAccount = (data, accessToken) => {
       "AllowReceivePromotionalEmails": true,
       "AllowReceiveSMS": true,
       "MobilePhoneCarrierID": 1,
-      "GenderID": {gender},
+      "GenderID": parseInt(`${gender}`, 10),
       "RequireCustomerPhone": true,
       "RequireCustomerAddress": true,
       "access_token": `${accessToken}`,
@@ -30,11 +30,12 @@ const createAccount = (data, accessToken) => {
         "State": `${state}`,
         "Zip": `${zip}`,
         "Country": {
-          "ID": {country},
+          "ID": parseInt(`${country}`, 10),
           "Name": ""
         }
       }
     }
+    console.log(data)
     fetch(`${proxyUrl}${targetUrl}`,
      { method: 'POST',
        headers: {
@@ -45,6 +46,7 @@ const createAccount = (data, accessToken) => {
     } 
     )
     .then (response => {
+      console.log(response)
       response.json()
       .then(data => {
         res (data)

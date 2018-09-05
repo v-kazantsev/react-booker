@@ -50,6 +50,9 @@ export const createCustomerAccount = (data) => {
       const clientToken = await getClientToken()
       const {access_token} = clientToken
       const customerAccount = await createAccount(data, access_token)
+      if(!customerAccount.IsSuccess) {
+        return dispatch(asyncActionError(customerAccount.ErrorMessage))
+      }
       dispatch(createCustomer(customerAccount))
       dispatch(asyncActionFinished())
     } catch (error) {
@@ -64,6 +67,9 @@ export const getCustomerToken = (email, password) => {
     try {
       dispatch(asyncActionStarted())
       const customer = await doLogin(email, password)
+      if (customer.error) {
+        return dispatch(asyncActionError(customer.error))
+      }
       dispatch(loginCustomer(customer))
       dispatch(asyncActionFinished())
     } catch (error) {
