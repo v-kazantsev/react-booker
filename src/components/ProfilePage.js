@@ -10,12 +10,15 @@ const mapStateToProps = state => ({
 class ProfilePage extends React.Component {
   render() {
     const {Customer} = this.props.customer
-    const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email} = Customer.Customer
+    const {Address, FirstName, LastName, DateOfBirth, HomePhone, CellPhone, Email, Gender} = Customer.Customer
+    console.log(Gender)
   return(
     <Container style={{width: "88%"}}>
     <Grid columns='equal'>
       <Grid.Column width={2}>
-        <Image src='https://randomuser.me/api/portraits/women/43.jpg' size='small' centered circular />
+      {Gender.ID === 1
+        ? <Image src='https://randomuser.me/api/portraits/men/43.jpg' size='small' centered circular />
+        : <Image src='https://randomuser.me/api/portraits/women/43.jpg' size='small' centered circular />}
       </Grid.Column>
       <Grid.Column width={10}>
       <Segment.Group>

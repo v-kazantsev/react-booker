@@ -16,7 +16,7 @@ export const createCustomer = (state = initialState, payload) => {
 }
 
 export const logoutCustomer = (state = initialState) => {
-  return {...state, isAuthed: false}
+  return {...state, isAuthed: false, customerInfo: {}}
 }
 
 export default createReducer(initialState,{

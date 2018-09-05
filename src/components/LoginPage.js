@@ -44,7 +44,7 @@ const validate = combineValidators({
 
 class LoginPage extends React.Component {
 
-  componentWillReceiveProps = () => {
+  componentWillUpdate = () => {
     
     if (this.props.customer) {this.props.history.push('./profile')}
   }

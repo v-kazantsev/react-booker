@@ -31,7 +31,9 @@ const Nav = ({isAuthed, customerLogout, customerInfo, history}) => {
             <Button as={Link} to="/signup" basic inverted content="Sign up" />
             </div>
           : <div>
-            <Image src='https://randomuser.me/api/portraits/women/43.jpg' avatar />
+            {customerInfo.Customer.Customer.Gender.ID === 1
+            ? <Image src='https://randomuser.me/api/portraits/men/43.jpg' avatar />
+            : <Image src='https://randomuser.me/api/portraits/women/43.jpg' avatar />}
               <span style={{marginRight: 16}}>{customerInfo.Customer.Customer['Email']}</span>
             <Button onClick={handleClick}  basic inverted content="Logout" />
             </div>
