@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { getCustomerToken } from 'actions/customerActions';
+import { composeValidators, combineValidators, isRequired, createValidator } from 'revalidate';
 import Input from './Input';
 
 const mapStateToProps = state => ({
@@ -13,6 +14,33 @@ const mapStateToProps = state => ({
 const actions = {
   getCustomerToken
 }
+
+const isValidEmail = createValidator(
+  message => value => {
+    if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      return message
+    }
+  },
+  'Invalid email address'
+)
+
+const isValidPassword = createValidator(
+  message => value => {
+    if (value && !/(?=.*[0-9])(?=.*[a-z])[0-9a-zA-Z]{6,}/g.test(value)) {
+      return message
+    }
+  },
+  'Password must contain at least 1 number. Password length must be greater than 6.'
+)
+
+const validate = combineValidators({
+  email: composeValidators(
+    isRequired({message: 'Email can not be blank'}),
+    isValidEmail)(),
+  password: composeValidators(
+    isRequired({message: 'Password can not be blank'}),
+    isValidPassword)()
+})
 
 class LoginPage extends React.Component {
 
@@ -26,6 +54,7 @@ class LoginPage extends React.Component {
   }
   
   render() {
+    const {invalid, pristine, submitting} = this.props;
     return (
       <div className='login-form'>
         <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
@@ -50,7 +79,7 @@ class LoginPage extends React.Component {
                 {
                   this.props.isLoading
                   ? (<Button color='teal' fluid size='large' loading>Loading</Button>)
-                  : (<Button color='teal' fluid size='large'>Login</Button>)
+                  : (<Button disabled={invalid || pristine || submitting} color='teal' fluid size='large'>Login</Button>)
                 }
               </Segment>
             </Form>
@@ -67,5 +96,6 @@ class LoginPage extends React.Component {
 LoginPage = connect(mapStateToProps, actions)(LoginPage)
 
 export default reduxForm({
-  form: 'login'
+  form: 'login',
+  validate
 })(LoginPage)
