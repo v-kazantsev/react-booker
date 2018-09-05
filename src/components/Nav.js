@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Menu, Button, Image, Container } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { customerLogout } from 'actions/customerActions';
@@ -15,10 +15,10 @@ const actions = {
 
 
 
-const Nav = ({isAuthed, customerLogout, customerInfo}) => {
+const Nav = ({isAuthed, customerLogout, customerInfo, history}) => {
   const handleClick = () => {
     customerLogout(customerInfo.access_token)
-    return <Redirect to='./logout' />
+    history.push('./logout')
   }
   
   return (
@@ -42,4 +42,4 @@ const Nav = ({isAuthed, customerLogout, customerInfo}) => {
   )
 };
 
-export default connect(mapStateToProps, actions)(Nav);
+export default withRouter(connect(mapStateToProps, actions)(Nav));
