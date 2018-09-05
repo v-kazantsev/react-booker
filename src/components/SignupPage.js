@@ -132,34 +132,36 @@ class SignupPage extends React.Component {
                   component={Input}
                   placeholder='City'                  
                 />
+                <Form.Group widths='equal'> 
                  <Field
                   name='state'
                   type='text'
                   component={Input}
                   placeholder='State'                  
-                />                            
-                  <Field
+                />
+                <Field
                   name='country'
                   component={SelectInput}
                   options={countryOptions}
                   type='text'
-                  placeholder='Country'                  
+                  placeholder='Country'                                                      
+                  />
+                  </Form.Group> 
+                <Form.Group widths='equal'>                         
+                  <Field
+                    name='zip'
+                    type='text'
+                    component={Input}
+                    placeholder='ZIP'                  
                   />
                   <Field
                   name='gender'
                   component={SelectInput}
                   options={genderOptions}
                   type='text'
-                  placeholder='Gender'                  
-                  />
-                <Form.Group widths='equal'>
-                <Field
-                  name='zip'
-                  type='text'
-                  component={Input}
-                  placeholder='ZIP'                  
-                />
-                </Form.Group>
+                  placeholder='Gender'                                   
+                  />                  
+                  </Form.Group>      
                 <Field
                   name='password'
                   type='password'
