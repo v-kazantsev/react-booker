@@ -34,6 +34,15 @@ const isValidPassword = createValidator(
   'Password must contain at least 1 number. Password length must be greater than 6.'
 )
 
+const isPasswordsMatched = createValidator(
+  message => (value, values) => {
+    if (values && `${value}` !== values.password) {
+      return message
+    }
+  },
+  "Passwords don't match."
+)
+
 const validate = combineValidators({
   firstName: isRequired({message: 'First name can not be blank'}),
   lastName: isRequired({message: 'Last name can not be blank'}),
@@ -57,7 +66,9 @@ const validate = combineValidators({
   password: composeValidators(
     isRequired({message: 'Password is required'}),
     isValidPassword())(),
-  passwordConfirm: isRequired({message: 'Please re-type the password'}),
+  passwordConfirm: composeValidators(
+    isRequired({message: 'Please re-type the password'}),
+    isPasswordsMatched())(),
 })
 
 const countryOptions = [
